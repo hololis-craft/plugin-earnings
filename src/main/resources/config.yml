@@ -1,0 +1,3 @@
+actionBar:
+  message: "Action bar text"
+  interval: 1.0

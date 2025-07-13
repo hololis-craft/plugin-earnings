@@ -1,0 +1,15 @@
+name: holofans-earnings
+version: '1.0-SNAPSHOT'
+main: me.f0reach.holofans.earnings.HolofansEarnings
+api-version: '1.21'
+depend: [ "PlaceholderAPI" ]
+commands:
+  earnings:
+    description: "Manage plugin"
+    usage: "/earnings"
+permissions:
+  holofans.earnings.reload:
+    description: "Allows reloading the plugin"
+    default: op
+  holofans.earnings.tutorial:
+    description: "Passed all of the tutorial"
