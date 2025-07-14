@@ -7,9 +7,15 @@ commands:
   earnings:
     description: "Manage plugin"
     usage: "/earnings"
+  tutorial:
+    description: "Control the tutorial"
+    usage: "/tutorial"
 permissions:
   holofans.earnings.reload:
     description: "Allows reloading the plugin"
     default: op
   holofans.earnings.tutorial:
-    description: "Passed all of the tutorial"
+    description: "Passed all of the tutorial (stub)"
+  holofans.earnings.tutorial.list.other:
+    description: "Allows listing other players' tutorial progress"
+    default: op
