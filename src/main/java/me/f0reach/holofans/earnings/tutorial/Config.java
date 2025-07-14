@@ -18,8 +18,6 @@ public class Config {
     }
 
     public void reload() {
-        plugin.reloadConfig();
-
         var section = plugin.getConfig().getConfigurationSection("tutorials");
         if (section == null) {
             plugin.getLogger().severe("Tutorials section is missing in the configuration file.");
