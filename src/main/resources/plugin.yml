@@ -2,7 +2,8 @@ name: holofans-earnings
 version: '1.0-SNAPSHOT'
 main: me.f0reach.holofans.earnings.HolofansEarnings
 api-version: '1.21'
-depend: [ "PlaceholderAPI" ]
+depend: [ "PlaceholderAPI", "LuckPerms" ]
+softdepend: [ "Jobs" ]
 commands:
   earnings:
     description: "Manage plugin"
