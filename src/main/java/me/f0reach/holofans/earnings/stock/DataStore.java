@@ -70,6 +70,15 @@ public class DataStore {
         return stockEntries;
     }
 
+    public StockEntry getStockEntry(String name) {
+        for (StockEntry stockEntry : stockEntries) {
+            if (stockEntry.getName().equalsIgnoreCase(name)) {
+                return stockEntry;
+            }
+        }
+        return null; // Not found
+    }
+
     public void addStockEntry(StockEntry stockEntry) {
         stockEntries.add(stockEntry);
         save();
@@ -79,5 +88,5 @@ public class DataStore {
         stockEntries.remove(stockEntry);
         save();
     }
-    
+
 }

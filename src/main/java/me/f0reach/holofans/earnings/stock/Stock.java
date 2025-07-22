@@ -8,10 +8,12 @@ import net.bestemor.villagermarket.shop.VillagerShop;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
 import net.kyori.adventure.text.format.TextDecoration;
+import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabCompleter;
+import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -28,12 +30,14 @@ public class Stock implements CommandExecutor, TabCompleter {
     private final DataStore dataStore;
     private final ShopManager shopManager;
     private final StockUpdateManager stockUpdateManager;
+    private final PlayerCollector playerCollector;
 
     public Stock(HolofansEarnings plugin) {
         this.plugin = plugin;
         this.config = new Config(plugin);
         this.dataStore = new DataStore(plugin);
         this.stockUpdateManager = new StockUpdateManager();
+        this.playerCollector = new PlayerCollector(dataStore, config);
 
         shopManager = VillagerMarketAPI.getShopManager();
 
@@ -44,6 +48,10 @@ public class Stock implements CommandExecutor, TabCompleter {
 
         Objects.requireNonNull(plugin.getCommand("kabu")).setExecutor(this);
         Objects.requireNonNull(plugin.getCommand("kabu")).setTabCompleter(this);
+
+        if (Bukkit.getPluginManager().isPluginEnabled("PlaceholderAPI")) { //
+            new StockPlaceholder(playerCollector).register(); //
+        }
 
         try {
             reloadConfig();
@@ -145,9 +153,19 @@ public class Stock implements CommandExecutor, TabCompleter {
                 return true;
             }
 
+            Map<StockEntry, Integer> countMap = sender instanceof Player p
+                    ? playerCollector.collectPlayerStocks(p) : Map.of();
+
             sender.sendMessage(Component.text("Stock Entries:", NamedTextColor.WHITE, TextDecoration.BOLD));
             for (var entry : dataStore.getStockEntries()) {
-                sender.sendMessage(entry.getListChatText(config.getStockDiffPrice()));
+                var text = entry.getListChatText(config.getStockDiffPrice());
+                if (countMap.containsKey(entry)) {
+                    var count = countMap.get(entry);
+                    text = text.append(Component.text(
+                            " (保有" + String.format("%.0f", entry.getPrice() * count)
+                                    + "円 / " + count + "株)", NamedTextColor.YELLOW));
+                }
+                sender.sendMessage(text);
             }
 
             return true;

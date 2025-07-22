@@ -1,16 +1,19 @@
 package me.f0reach.holofans.earnings.stock;
 
 import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.TextComponent;
 import net.kyori.adventure.text.format.NamedTextColor;
 import net.kyori.adventure.text.format.TextDecoration;
 import org.bukkit.Material;
 import org.bukkit.configuration.serialization.ConfigurationSerializable;
 import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 
 public class StockEntry implements ConfigurationSerializable {
     private String name;
@@ -106,6 +109,16 @@ public class StockEntry implements ConfigurationSerializable {
         return customName != null && customName.toString().contains("株: ");
     }
 
+    public static @Nullable String getStockName(@NotNull ItemStack item) {
+        if (!isStockItem(item)) {
+            return null;
+        }
+        var meta = item.getItemMeta();
+        var customName = Objects.requireNonNull(meta.customName());
+        var name = customName instanceof TextComponent text ? text.content() : customName.toString();
+        return name.replace("株: ", "");
+    }
+
     public Component getItemDisplayName() {
         return Component.text("株: " + getName(), NamedTextColor.GOLD, TextDecoration.BOLD);
     }
@@ -115,9 +128,9 @@ public class StockEntry implements ConfigurationSerializable {
         return Component.empty()
                 .append(Component.text("株: " + getName(), NamedTextColor.GOLD, TextDecoration.BOLD))
                 .append(Component.text(" | ", NamedTextColor.WHITE))
-                .append(Component.text("買値: " + price, NamedTextColor.GREEN))
+                .append(Component.text("買: " + String.format("%.0f", price), NamedTextColor.GREEN))
                 .append(Component.text(" | ", NamedTextColor.WHITE))
-                .append(Component.text("売値: " + sellPrice, NamedTextColor.RED));
+                .append(Component.text("売: " + String.format("%.0f", sellPrice), NamedTextColor.RED));
     }
 
     public double calculateNextPrice(double defaultCoe1, double defaultCoe2, double minPrice) {
