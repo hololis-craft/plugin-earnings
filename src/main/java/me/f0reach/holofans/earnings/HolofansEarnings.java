@@ -1,6 +1,7 @@
 package me.f0reach.holofans.earnings;
 
 import me.f0reach.holofans.earnings.jobs.Jobs;
+import me.f0reach.holofans.earnings.stock.Stock;
 import me.f0reach.holofans.earnings.tutorial.Tutorial;
 import net.luckperms.api.LuckPerms;
 import org.bukkit.command.Command;
@@ -17,6 +18,7 @@ public final class HolofansEarnings extends JavaPlugin implements CommandExecuto
     private ActionBarDisplay actionBarDisplay;
     private Tutorial tutorial;
     private Jobs jobs;
+    private Stock stock;
 
     // Interface
     private LuckPerms luckPerms;
@@ -28,6 +30,7 @@ public final class HolofansEarnings extends JavaPlugin implements CommandExecuto
         actionBarDisplay = new ActionBarDisplay(this);
         tutorial = new Tutorial(this);
         jobs = new Jobs(this);
+        stock = new Stock(this);
 
         getLogger().info("HolofansEarnings plugin has been enabled successfully.");
         Objects.requireNonNull(getCommand("earnings")).setExecutor(this);
@@ -61,6 +64,9 @@ public final class HolofansEarnings extends JavaPlugin implements CommandExecuto
         }
         if (jobs != null) {
             jobs.reloadConfig();
+        }
+        if (stock != null) {
+            stock.reloadConfig();
         }
     }
 

@@ -51,7 +51,8 @@ public class Tutorial implements CommandExecutor, TabCompleter {
         if (allCompleted) {
             for (String command : config.getCompleteCommands()) {
                 // Replace placeholders in the command if necessary
-                String finalCommand = command.replace("{player}", player.getName());
+                String finalCommand = command.replace("{player}", player.getName())
+                        .replace("{uuid}", player.getUniqueId().toString());
                 // Dispatch the command as console
                 plugin.getServer().dispatchCommand(plugin.getServer().getConsoleSender(), finalCommand);
             }
@@ -80,7 +81,7 @@ public class Tutorial implements CommandExecutor, TabCompleter {
                 sender.sendMessage("Unknown tutorial: " + tutorialName);
                 return true;
             }
-            
+
             // Logic to mark the tutorial as completed
             if (dataStore.addCompletedTutorial(player.getUniqueId(), tutorialName)) {
                 checkComplete(player);

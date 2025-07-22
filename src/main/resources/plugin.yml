@@ -3,7 +3,7 @@ version: '1.0-SNAPSHOT'
 main: me.f0reach.holofans.earnings.HolofansEarnings
 api-version: '1.21'
 depend: [ "PlaceholderAPI", "LuckPerms" ]
-softdepend: [ "Jobs" ]
+softdepend: [ "Jobs", "VillagerMarket" ]
 commands:
   earnings:
     description: "Manage plugin"
@@ -11,6 +11,9 @@ commands:
   tutorial:
     description: "Control the tutorial"
     usage: "/tutorial"
+  kabu:
+    description: "Control the kabu"
+    usage: "/kabu"
 permissions:
   holofans.earnings.reload:
     description: "Allows reloading the plugin"
@@ -19,4 +22,7 @@ permissions:
     description: "Passed all of the tutorial (stub)"
   holofans.earnings.tutorial.list.other:
     description: "Allows listing other players' tutorial progress"
+    default: op
+  holofans.earnings.kabu:
+    description: "Allows using the kabu command"
     default: op

@@ -33,7 +33,8 @@ public class Jobs implements Listener {
 
     private void dispatchCommand(String command, Player player) {
         // Replace placeholders in the command if necessary
-        String finalCommand = command.replace("{player}", player.getName());
+        String finalCommand = command.replace("{player}", player.getName())
+                .replace("{uuid}", player.getUniqueId().toString());
 
         // Dispatch the command as console
         plugin.getServer().dispatchCommand(plugin.getServer().getConsoleSender(), finalCommand);

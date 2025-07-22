@@ -8,6 +8,7 @@ version = '1.0-SNAPSHOT'
 
 repositories {
     mavenCentral()
+    mavenLocal()
     maven {
         name = "papermc-repo"
         url = "https://repo.papermc.io/repository/maven-public/"
@@ -32,7 +33,7 @@ dependencies {
     compileOnly("net.luckperms:api:5.4")
     compileOnly("net.milkbowl.vault:VaultUnlockedAPI:2.11")
     compileOnly("net.luckperms:api:5.4")
-//    compileOnly("com.github.Bestem0r:VillagerMarket:1.12.1")
+    compileOnly("me.bestemor.villagermarket:VillagerMarket:1.12.1-SNAPSHOT")
     compileOnly("com.github.Zrips:Jobs:v5.2.6.2") {
         transitive = false
     }
