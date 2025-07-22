@@ -14,6 +14,9 @@ import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabCompleter;
 import org.bukkit.entity.Player;
+import org.bukkit.event.EventHandler;
+import org.bukkit.event.Listener;
+import org.bukkit.event.player.PlayerJoinEvent;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -24,7 +27,7 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.stream.Collectors;
 
-public class Stock implements CommandExecutor, TabCompleter {
+public class Stock implements CommandExecutor, TabCompleter, Listener {
     private final HolofansEarnings plugin;
     private final Config config;
     private final DataStore dataStore;
@@ -48,6 +51,7 @@ public class Stock implements CommandExecutor, TabCompleter {
 
         Objects.requireNonNull(plugin.getCommand("kabu")).setExecutor(this);
         Objects.requireNonNull(plugin.getCommand("kabu")).setTabCompleter(this);
+        plugin.getServer().getPluginManager().registerEvents(this, plugin);
 
         if (Bukkit.getPluginManager().isPluginEnabled("PlaceholderAPI")) { //
             new StockPlaceholder(playerCollector).register(); //
@@ -369,6 +373,7 @@ public class Stock implements CommandExecutor, TabCompleter {
 
             return true;
         }
+
         return false;
     }
 
@@ -398,5 +403,20 @@ public class Stock implements CommandExecutor, TabCompleter {
         }
 
         return null; // No suggestions for other cases
+    }
+
+    @EventHandler
+    public void onJoin(PlayerJoinEvent event) {
+        var player = event.getPlayer();
+        if (player.hasPermission("holofans.stock.migrate")) {
+            try {
+                var result = new Converter(dataStore).migrateItem(player);
+                if (result > 0)
+                    player.sendMessage(Component.text("株のデータを移行しました。", NamedTextColor.GREEN));
+            } catch (Exception e) {
+                plugin.getLogger().severe("Failed to migrate stock data for " + player.getName() + ": " + e.getMessage());
+                player.sendMessage(Component.text("株のデータ移行に失敗しました。", NamedTextColor.RED));
+            }
+        }
     }
 }

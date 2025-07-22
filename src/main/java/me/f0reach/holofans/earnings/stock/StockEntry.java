@@ -22,6 +22,8 @@ public class StockEntry implements ConfigurationSerializable {
     private double price;
     private double overrideCoe1, overrideCoe2;
 
+    private static final Material STOCK_ITEM_TYPE = Material.BOOK;
+
     public StockEntry(String name) {
         this.name = name;
         this.slotId = -1; // Default slot ID if not specified
@@ -84,7 +86,7 @@ public class StockEntry implements ConfigurationSerializable {
     }
 
     public ItemStack getStockItem() {
-        var item = new ItemStack(Material.FLOWER_BANNER_PATTERN, 1);
+        var item = new ItemStack(STOCK_ITEM_TYPE, 1);
         var meta = item.getItemMeta();
         meta.setEnchantmentGlintOverride(true);
         meta.customName(getItemDisplayName());
@@ -97,7 +99,7 @@ public class StockEntry implements ConfigurationSerializable {
     }
 
     public static boolean isStockItem(@NotNull ItemStack item) {
-        if (item.getType() != Material.FLOWER_BANNER_PATTERN) {
+        if (item.getType() != STOCK_ITEM_TYPE) {
             return false;
         }
         var meta = item.getItemMeta();
