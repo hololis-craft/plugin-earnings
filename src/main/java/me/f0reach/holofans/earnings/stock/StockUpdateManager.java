@@ -24,7 +24,7 @@ public class StockUpdateManager {
                     .append(Component.text(stockEntry.getName(), NamedTextColor.GOLD, TextDecoration.BOLD))
                     .append(Component.text(" "))
                     .append(Component.text("価格: ", NamedTextColor.GREEN))
-                    .append(Component.text(stockEntry.getPrice() + "円", NamedTextColor.GREEN, TextDecoration.ITALIC));
+                    .append(Component.text(String.format("%.0f", stockEntry.getPrice()) + "円", NamedTextColor.GREEN, TextDecoration.ITALIC));
         }
     }
 
@@ -40,14 +40,14 @@ public class StockUpdateManager {
         @Override
         public Component getUpdateMessage() {
             var diff = stockEntry.getPrice() - oldPrice;
-            var diffText = (diff > 0 ? "+" + diff : String.valueOf(diff)) + "円";
+            var diffText = (diff > 0 ? "+" + String.format("%.0f", diff) : String.format("%.0f", diff)) + "円";
             return Component.text("[価格変動] ", NamedTextColor.AQUA)
                     .append(Component.text(stockEntry.getName(), NamedTextColor.GOLD, TextDecoration.BOLD))
                     .append(Component.text(" "))
                     .append(Component.text("価格: ", NamedTextColor.GREEN))
-                    .append(Component.text(oldPrice + "円", NamedTextColor.WHITE, TextDecoration.ITALIC))
+                    .append(Component.text(String.format("%.0f", oldPrice) + "円", NamedTextColor.WHITE, TextDecoration.ITALIC))
                     .append(Component.text(" -> ", NamedTextColor.GRAY))
-                    .append(Component.text(stockEntry.getPrice() + "円", NamedTextColor.WHITE, TextDecoration.ITALIC))
+                    .append(Component.text(String.format("%.0f", stockEntry.getPrice()) + "円", NamedTextColor.WHITE, TextDecoration.ITALIC))
                     .append(Component.text(" (", NamedTextColor.GRAY))
                     .append(Component.text(diffText, diff >= 0 ? NamedTextColor.GREEN : NamedTextColor.RED, TextDecoration.BOLD))
                     .append(Component.text(")", NamedTextColor.GRAY));
